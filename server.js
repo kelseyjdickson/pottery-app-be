@@ -2,12 +2,15 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const dotenv = require("dotenv");
 const item = require("./routes/item");
+const connectDB = require("./config/db");
 
 dotenv.config({ path: "./config/config.env" });
 
+connectDB();
+
 const app = express();
 
-//parse apolication/json
+//parse application/json
 app.use(bodyParser.json());
 
 app.use("/item", item);
