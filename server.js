@@ -2,6 +2,7 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const dotenv = require("dotenv");
 const item = require("./routes/item");
+const user = require("./routes/user");
 const connectDB = require("./config/db");
 
 dotenv.config({ path: "./config/config.env" });
@@ -14,6 +15,7 @@ const app = express();
 app.use(bodyParser.json());
 
 app.use("/item", item);
+app.use("/user", user);
 
 const PORT = process.env.PORT || 5001;
 
