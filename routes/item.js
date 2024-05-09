@@ -5,6 +5,7 @@ const {
   createItem,
   putItem,
   deleteItems,
+  getItem,
 } = require("../controllers/itemController");
 
 router
@@ -13,5 +14,7 @@ router
   .post(createItem)
   .put(putItem)
   .delete(deleteItems);
+
+router.route("/:itemId").get(getItem);
 
 module.exports = router;

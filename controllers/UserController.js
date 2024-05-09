@@ -1,6 +1,17 @@
-// for '/sser' endpoints
+// for '/user' endpoints
 
 const getUsers = (req, res, next) => {
+  if (Object.keys(req.query).length) {
+    const username = req.query.username;
+
+    const filter = [];
+    if (username) filter.push(username);
+
+    for (const query of filter) {
+      console.log(`Searching user by ${query}`);
+    }
+  }
+
   res
     .status(200)
     .setHeader("Content-Type", "application/json")
