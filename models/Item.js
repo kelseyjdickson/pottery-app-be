@@ -17,6 +17,11 @@ const ItemSchema = new Schema(
       type: Number,
       required: true,
     },
+    itemDescription: {
+      type: String,
+      required: true,
+      maxLength: 2000,
+    },
   },
   {
     timestamps: true,

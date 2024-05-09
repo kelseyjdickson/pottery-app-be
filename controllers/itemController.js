@@ -4,11 +4,12 @@ const Item = require("../models/Item");
 
 const getItems = async (req, res, next) => {
   if (Object.keys(req.query).length) {
-    const { itemName, price, quantity } = req.query;
+    const { itemName, price, quantity, itemDescription } = req.query;
     const filter = [];
     if (itemName) filter.push(itemName);
     if (price) filter.push(price);
     if (quantity) filter.push(quantity);
+    if (itemDescription) filter.push(itemDescription);
 
     for (const query of filter) {
       console.log(`Searching item by ${query}`);
