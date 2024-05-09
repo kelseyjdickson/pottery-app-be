@@ -1,6 +1,8 @@
+const Item = require("../models/Item");
+
 // for '/item' endpoints
 
-const getItems = (req, res, next) => {
+const getItems = async (req, res, next) => {
   if (Object.keys(req.query).length) {
     const { itemName, price, quantity } = req.query;
     const filter = [];
@@ -13,46 +15,89 @@ const getItems = (req, res, next) => {
     }
   }
 
-  res
-    .status(200)
-    .setHeader("Content-Type", "application/json")
-    .json({ message: "You hit me, show me all the items" });
+  try {
+    const itemsPayload = await Item.find();
+
+    res
+      .status(200)
+      .setHeader("Content-Type", "application/json")
+      .json(itemsPayload);
+  } catch (err) {
+    next(err);
+  }
 };
 
-const createItem = (req, res, next) => {
-  res
-    .status(201)
-    .setHeader("Content-Type", "application/json")
-    .json({ message: `Created Item with name ${req.body.itemName}` });
+const createItem = async (req, res, next) => {
+  try {
+    const payloadCreateItem = await Item.create(req.body);
+    res
+      .status(201)
+      .setHeader("Content-Type", "application/json")
+      .json(payloadCreateItem);
+  } catch (err) {
+    next(err);
+  }
 };
 
-const putItem = (req, res, next) => {
-  res
-    .status(200)
-    .setHeader("Content-Type", "application/json")
-    .json({ message: "You hit me" });
-};
-
-const deleteItems = (req, res, next) => {
-  res
-    .status(200)
-    .setHeader("Content-Type", "application/json")
-    .json({ message: "Deleting items" });
+const deleteItems = async (req, res, next) => {
+  try {
+    const deletedItems = await Item.deleteMany();
+    res
+      .status(200)
+      .setHeader("Content-Type", "application/json")
+      .json(deletedItems);
+  } catch (err) {
+    next(err);
+  }
 };
 
 // For '/items/:itemId'
 
-const getItem = (req, res, next) => {
-  res
-    .status(200)
-    .setHeader("Content-Type", "application/json")
-    .json({ message: `Show me the item with Item Id of ${req.params.itemId}` });
+const getItem = async (req, res, next) => {
+  try {
+    const getItemPayloadById = await Item.findById(req.params.itemId);
+    res
+      .status(200)
+      .setHeader("Content-Type", "application/json")
+      .json(getItemPayloadById);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateItem = async (req, res, next) => {
+  try {
+    const updateItem = await Item.findByIdAndUpdate(
+      req.params.itemId,
+      req.body,
+      { new: true }
+    );
+    res
+      .status(200)
+      .setHeader("Content-Type", "application/json")
+      .json(updateItem);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteItem = async (req, res, next) => {
+  try {
+    const deleteItem = await Item.findByIdAndDelete(req.params.itemId);
+    res
+      .status(200)
+      .setHeader("Content-Type", "application/json")
+      .json(deleteItem);
+  } catch (err) {
+    next(err);
+  }
 };
 
 module.exports = {
   getItems,
   createItem,
-  putItem,
   deleteItems,
   getItem,
+  updateItem,
+  deleteItem,
 };
