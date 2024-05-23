@@ -7,10 +7,19 @@ const {
   deleteItems,
   getItem,
   deleteItem,
+  getItemRatings,
+  updateRating,
+  deleteRating,
 } = require("../controllers/itemController");
 
 router.route("/").get(getItems).post(createItem).delete(deleteItems);
 
 router.route("/:itemId").get(getItem).post(updateItem).delete(deleteItem);
+
+router
+  .route("/:itemId/ratings")
+  .get(getItemRatings)
+  .post(updateRating)
+  .delete(deleteRating);
 
 module.exports = router;

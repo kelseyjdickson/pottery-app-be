@@ -23,7 +23,7 @@ const getUsers = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const createUser = await UserSchema.create(req.body);
+    const createUser = await User.create(req.body);
     res
       .status(201)
       .setHeader("Content-Type", "application/json")

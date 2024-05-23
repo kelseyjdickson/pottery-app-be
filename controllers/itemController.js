@@ -94,6 +94,51 @@ const deleteItem = async (req, res, next) => {
   }
 };
 
+// Ratings for /:itemId/ratings
+const getItemRatings = async (req, res, next) => {
+  try {
+    const getRating = await Item.findById(req.params.itemId);
+    res
+      .status(200)
+      .setHeader("Content-Type", "application/json")
+      .json(getRating.ratings);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateRating = async (req, res, next) => {
+  try {
+    const updateRating = await Item.findById(req.params.itemId);
+
+    updateRating.ratings.push(req.body);
+    await updateRating.save();
+
+    res
+      .status(200)
+      .setHeader("Content-Type", "application/json")
+      .json(updateRating.ratings);
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteRating = async (req, res, next) => {
+  try {
+    const deleteItemRating = await Item.findById(req.params.itemId);
+    deleteItemRating.ratings = [];
+    await deleteItemRating.save();
+    res
+      .status(200)
+      .setHeader("Content-Type", "application/json")
+      .json({ msg: `Deleted all ratings for item id of ${req.params.itemId}` });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Ratings for item/:itemId/ratings
+
 module.exports = {
   getItems,
   createItem,
@@ -101,4 +146,7 @@ module.exports = {
   getItem,
   updateItem,
   deleteItem,
+  getItemRatings,
+  updateRating,
+  deleteRating,
 };

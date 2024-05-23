@@ -1,6 +1,23 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const RatingSchema = new Schema({
+  rating: {
+    type: Number,
+    min: 1,
+    max: 5,
+    required: true,
+  },
+  text: {
+    type: String,
+    required: true,
+  },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+});
+
 const ItemSchema = new Schema(
   {
     itemName: {
@@ -22,6 +39,7 @@ const ItemSchema = new Schema(
       required: true,
       maxLength: 2000,
     },
+    ratings: [RatingSchema],
   },
   {
     timestamps: true,
