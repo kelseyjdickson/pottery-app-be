@@ -3,17 +3,23 @@ const Item = require("../models/Item");
 // for '/item' endpoints
 
 const getItems = async (req, res, next) => {
+  //query parameter
+  const filter = {};
+  const options = {};
   if (Object.keys(req.query).length) {
-    const { itemName, price, quantity, itemDescription } = req.query;
-    const filter = [];
-    if (itemName) filter.push(itemName);
-    if (price) filter.push(price);
-    if (quantity) filter.push(quantity);
-    if (itemDescription) filter.push(itemDescription);
+    const { itemName, price, quantity, itemDescription, sortByPrice, limit } =
+      req.query;
 
-    for (const query of filter) {
-      console.log(`Searching item by ${query}`);
-    }
+    if (itemName) filter.itemName = true;
+    if (price) filter.price = true;
+    if (quantity) filter.quantity = true;
+    if (itemDescription) filter.itemDescription = true;
+
+    if (limit) options.limit = limit;
+    if (sortByPrice)
+      options.sort = {
+        price: sortByPrice,
+      };
   }
 
   try {

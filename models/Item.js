@@ -45,5 +45,14 @@ const ItemSchema = new Schema(
     timestamps: true,
   }
 );
+// Pre and Post hooks
+ItemSchema.pre("save", function (next) {
+  this.itemName = this.itemName.toUpperCase();
+  next();
+});
+
+ItemSchema.post("save", function (next) {
+  this.itemName = this.itemName.toLowerCase();
+});
 
 module.exports = mongoose.model("Item", ItemSchema);
