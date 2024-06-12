@@ -1,4 +1,5 @@
 const Item = require("../models/Item");
+const path = require("path");
 
 // for '/item' endpoints
 
@@ -143,7 +144,33 @@ const deleteRating = async (req, res, next) => {
   }
 };
 
-// Ratings for item/:itemId/ratings
+const postItemImage = async (req, res, next) => {
+  try {
+    const err = { message: `Error uploading image` };
+    if (!req.files) next(err);
+
+    const file = req.files.file;
+
+    if (!file.mimetype.startsWith("image")) next(err);
+    if (file.size > process.env.MAX_FILE_SIZE) next(err);
+
+    file.name = `photo_${req.params.itemId}${path.parse(file.name).ext}`;
+
+    const filePath = process.env.FILE_UPLOAD_PATH + file.name;
+    console.log(req.params.itemId);
+    file.mv(filePath, async (err) => {
+      await Item.findById(req.params.itemId, {
+        image: file.name,
+      });
+      res
+        .status(200)
+        .setHeader("Content-Type", "application/json")
+        .json({ message: "Image uploaded!" });
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 module.exports = {
   getItems,
@@ -155,4 +182,5 @@ module.exports = {
   getItemRatings,
   updateRating,
   deleteRating,
+  postItemImage,
 };

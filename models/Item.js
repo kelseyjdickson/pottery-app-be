@@ -40,6 +40,9 @@ const ItemSchema = new Schema(
       maxLength: 2000,
     },
     ratings: [RatingSchema],
+    image: {
+      type: String,
+    },
   },
   {
     timestamps: true,
